@@ -24,46 +24,43 @@ class MyAppState extends State<MyApp> {
         body: SafeArea(
           child: FutureBuilder<bool>(
             future: NfcManager.instance.isAvailable(),
-            builder: (context, ss) => ss.data != true
-                ? Center(child: Text('NfcManager.isAvailable(): ${ss.data}'))
-                : Flex(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    direction: Axis.vertical,
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: Container(
-                          margin: EdgeInsets.all(4),
-                          constraints: BoxConstraints.expand(),
-                          decoration: BoxDecoration(border: Border.all()),
-                          child: SingleChildScrollView(
-                            child: ValueListenableBuilder<dynamic>(
-                              valueListenable: result,
-                              builder: (context, value, _) =>
-                                  Text('${value ?? ''}'),
-                            ),
-                          ),
-                        ),
+            builder: (context, ss) => Flex(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              direction: Axis.vertical,
+              children: [
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.all(4),
+                    constraints: BoxConstraints.expand(),
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: SingleChildScrollView(
+                      child: ValueListenableBuilder<dynamic>(
+                        valueListenable: result,
+                        builder: (context, value, _) => Text('${value ?? ''}'),
                       ),
-                      Flexible(
-                        flex: 3,
-                        child: GridView.count(
-                          padding: EdgeInsets.all(4),
-                          crossAxisCount: 2,
-                          childAspectRatio: 4,
-                          crossAxisSpacing: 4,
-                          mainAxisSpacing: 4,
-                          children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: ElevatedButton(
-                                  child: Text('Tag Read'), onPressed: _tagRead),
-                            ),
-                          ],
-                        ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: GridView.count(
+                    padding: EdgeInsets.all(4),
+                    crossAxisCount: 2,
+                    childAspectRatio: 4,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                            child: Text('Tag Read'), onPressed: _tagRead),
                       ),
                     ],
                   ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
