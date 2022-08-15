@@ -30,6 +30,10 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.0.3
+  animated_round_button_flutter: ^0.0.1
+  rounded_loading_button: ^2.0.8
+  avatar_glow: ^2.0.2
+  lottie: ^1.4.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -80,11 +84,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+          
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

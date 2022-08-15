@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:scanner_app/screens/file_screen.dart';
+import 'package:scanner_app/screens/scan_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,18 +16,18 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  ValueNotifier<dynamic> result = ValueNotifier(null);
+  ValueNotifier<dynamic>? result = ValueNotifier(null);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('snanner app')),
-        body: SafeArea(
+        backgroundColor: Colors.purple,
+        body: FileScreen(result),
+        /*SafeArea(
           child: FutureBuilder<bool>(
             future: NfcManager.instance.isAvailable(),
             builder: (context, ss) => Flex(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               direction: Axis.vertical,
               children: [
                 Flexible(
@@ -62,15 +64,8 @@ class MyAppState extends State<MyApp> {
               ],
             ),
           ),
-        ),
+        ),*/
       ),
     );
-  }
-
-  void _tagRead() {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      result.value = tag.data;
-      NfcManager.instance.stopSession();
-    });
   }
 }
