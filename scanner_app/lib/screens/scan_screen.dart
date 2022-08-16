@@ -45,7 +45,7 @@ class _SCanScreenState extends State<SCanScreen>
         builder: (context, ss) => Column(
           children: [
             SizedBox(
-              height: 120,
+              height: 110,
             ),
             Text(
               'Place the card near your phone',
@@ -57,7 +57,7 @@ class _SCanScreenState extends State<SCanScreen>
                   fontFamily: 'Lato'),
             ),
             SizedBox(
-              height: 100,
+              height: 130,
             ),
             Center(
               child: GestureDetector(
@@ -87,9 +87,16 @@ class _SCanScreenState extends State<SCanScreen>
     print('start reading');
     NfcManager.instance.startSession(
       onDiscovered: (NfcTag tag) async {
-        setState(() {
-          result.value = tag.data;
-        });
+        final ndef = Ndef.from(tag);
+        if (ndef == null) throw ('Tag is not ndef.');
+        print(String.fromCharCodes(
+          ndef.cachedMessage!.records[0].identifier,
+        ));
+
+        Map tagNfca = tag.data['ndef'];
+        result.value = tag.data['ndef'];
+        print('read: ${tagNfca}');
+
         print(result.value);
         NfcManager.instance.stopSession();
         Navigator.push(

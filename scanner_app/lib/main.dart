@@ -20,10 +20,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.purple,
-        body: FileScreen(result),
+    return MaterialApp(home: SCanScreen()
         /*SafeArea(
           child: FutureBuilder<bool>(
             future: NfcManager.instance.isAvailable(),
@@ -65,7 +62,6 @@ class MyAppState extends State<MyApp> {
             ),
           ),
         ),*/
-      ),
-    );
+        );
   }
 }
