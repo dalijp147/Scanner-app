@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import './screens/dachboard.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:scanner_app/screens/file_screen.dart';
@@ -17,11 +17,20 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   ValueNotifier<dynamic>? result = ValueNotifier(null);
-
+  final int counter = 0;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SCanScreen()
-        /*SafeArea(
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/scanscreen': (context) => SCanScreen(),
+        '/filescreen': (context) => FileScreen(result),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/dashboard': (context) => DachBoard(counter),
+      },
+      home: SCanScreen(),
+      /*SafeArea(
           child: FutureBuilder<bool>(
             future: NfcManager.instance.isAvailable(),
             builder: (context, ss) => Flex(
@@ -62,6 +71,6 @@ class MyAppState extends State<MyApp> {
             ),
           ),
         ),*/
-        );
+    );
   }
 }
