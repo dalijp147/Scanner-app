@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,12 +8,12 @@ import 'package:scanner_app/screens/scan_screen.dart';
 import 'file_screen.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'chart.dart';
+import 'package:provider/provider.dart';
+import '../providers/click.dart';
 
 class DachBoard extends StatelessWidget {
-  final int counter;
-  DachBoard(this.counter);
-
   Widget build(BuildContext context) {
+    final count = Provider.of<Clicks>(context).getCounter();
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -55,23 +57,29 @@ class DachBoard extends StatelessWidget {
                   children: [
                     Container(
                       height: 100,
-                      width: MediaQuery.of(context).size.width,
+                      width: 300,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         boxShadow: [
                           BoxShadow(
-                              color: Color.fromARGB(255, 0, 0, 0),
-                              blurRadius: 2.0,
-                              offset: Offset(2.0, 2.0)),
+                            offset: const Offset(0, 20),
+                            blurRadius: 30,
+                            spreadRadius: -5,
+                          ),
                         ],
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.purple, Colors.blue],
+                        ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('Number of card scanned'),
                           Text(
-                            '$counter',
+                            '$count',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 69, 0, 180),
                                 fontSize: 35,
@@ -89,6 +97,8 @@ class DachBoard extends StatelessWidget {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       ),
+                      child: Column(
+                          children: [Text('this is your daily card scanned')]),
                     ),
                   ],
                 ),

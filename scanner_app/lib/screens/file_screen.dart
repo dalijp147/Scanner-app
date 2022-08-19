@@ -19,7 +19,7 @@ class FileScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          elevation: 0,
+          elevation: 0.0,
           title: Center(
             child: Text(
               'Data',
@@ -57,13 +57,26 @@ class FileScreen extends StatelessWidget {
                         end: Alignment.bottomRight,
                         colors: [Colors.purple, Colors.blue],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xFF04589A),
+                          offset: Offset(-7, 7),
+                          blurRadius: 6,
+                        ),
+                      ],
                     ),
                     child: SingleChildScrollView(
                       child: ValueListenableBuilder<dynamic>(
                         valueListenable: result!,
                         builder: (context, value, _) => result!.value == null
                             ? Center(
-                                child: Text('there is no data '),
+                                child: Text(
+                                  'THERE IS NO DATA FOUND',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               )
                             : Text(
                                 '${value}',

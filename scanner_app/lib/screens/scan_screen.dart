@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_round_button_flutter/animated_round_button_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -6,48 +8,30 @@ import 'package:scanner_app/screens/auth_screen.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'dart:typed_data';
 import './dachboard.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/click.dart';
 import 'package:scanner_app/screens/file_screen.dart';
+import 'package:ndef/ndef.dart' as ndef;
 
 class SCanScreen extends StatefulWidget {
   @override
   State<SCanScreen> createState() => _SCanScreenState();
 }
 
-class _SCanScreenState extends State<SCanScreen>
-    with SingleTickerProviderStateMixin {
+class _SCanScreenState extends State<SCanScreen> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
 
   late final AnimationController _controller;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-  }
 
   @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
   bool card = false;
-  int counter = 0;
-
-  void _incrementCounter() {
-    setState(
-      () {
-        counter++;
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    void _incrementCounter(BuildContext context) {
+      Provider.of<Clicks>(context, listen: false).incrementCounter();
+    }
+
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -82,16 +66,14 @@ class _SCanScreenState extends State<SCanScreen>
                       onTap: () async {
                         await _tagRead();
 
-                        if (result.value == null) {
+                        if (result.value != null) {
+                          _incrementCounter(context);
                           Scaffold.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('No Card detected'),
                               duration: Duration(seconds: 1),
                             ),
                           );
-                        } else {
-                          _incrementCounter;
-                          print('ok');
                         }
                       },
                       child: Lottie.network(
@@ -138,7 +120,7 @@ class _SCanScreenState extends State<SCanScreen>
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => DachBoard(counter)),
+                    MaterialPageRoute(builder: (context) => DachBoard()),
                   );
                 },
                 icon: Icon(
@@ -155,25 +137,18 @@ class _SCanScreenState extends State<SCanScreen>
   }
 
   Future<void> _tagRead() async {
-    print('start reading');
     NfcManager.instance.startSession(
       onDiscovered: (NfcTag tag) async {
         final ndef = Ndef.from(tag);
         if (ndef == null) throw ('Tag is not ndef.');
-        print(String.fromCharCodes(
-          ndef.cachedMessage!.records[0].identifier,
-        ));
 
-        Map tagNfca = tag.data['ndef'];
+        Map tagNfca = tag.data['nfca'];
         setState(() {
-          counter++;
-          result.value = tag.data['ndef'];
+          result.value = tag.data['nfca'];
         });
 
-        print('read: ${tagNfca}');
-
-        print(result.value);
         NfcManager.instance.stopSession();
+
         Navigator.push(
           context,
           MaterialPageRoute(
