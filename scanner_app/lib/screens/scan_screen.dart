@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:animated_round_button_flutter/animated_round_button_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../providers/click.dart';
 import 'package:scanner_app/screens/file_screen.dart';
 import 'package:ndef/ndef.dart' as ndef;
+import './fromrow.dart';
 
 class SCanScreen extends StatefulWidget {
   @override
@@ -28,8 +30,59 @@ class _SCanScreenState extends State<SCanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _incrementCounter(BuildContext context) {
+    void incrementCounter(BuildContext context) {
       Provider.of<Clicks>(context, listen: false).incrementCounter();
+    }
+
+    Future<void> _tagRead() async {
+      NfcManager.instance.startSession(
+        onDiscovered: (NfcTag tag) async {
+          final ndef = Ndef.from(tag);
+          if (ndef == null) throw ('Tag is not ndef.');
+
+          Map tagNfca = tag.data['nfca'];
+          setState(() {
+            result.value = tag.data['nfca'];
+          });
+          var convert = json.decode(tag.data.toString());
+          List<int> charCodes = convert['nfca']['identifier'];
+          print(new String.fromCharCodes(charCodes));
+          /*if (ndef is Ndef) {
+            final cachedMessage = ndef.cachedMessage;
+            final canMakeReadOnly =
+                ndef.additionalData['canMakeReadOnly'] as bool?;
+            final type = ndef.additionalData['type'] as String?;
+            if (type != null)
+              result.value.add(FormRow(
+                title: Text('Size'),
+                subtitle: Text(
+                    '${cachedMessage?.byteLength ?? 0} / ${ndef.maxSize} bytes'),
+              ));*/
+          /* result.value.add(FormRow(
+              title: Text('Writable'),
+              subtitle: Text('${ndef.isWritable}'),
+            ));
+            if (canMakeReadOnly != null)
+              result.value.add(FormRow(
+                title: Text('Can Make Read Only'),
+                subtitle: Text('$canMakeReadOnly'),
+              ));*/
+          NfcManager.instance.stopSession();
+          incrementCounter(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FileScreen(
+                result,
+              ),
+            ),
+          );
+
+          ;
+        },
+      );
+
+      print('end reading');
     }
 
     return Container(
@@ -66,8 +119,7 @@ class _SCanScreenState extends State<SCanScreen> {
                       onTap: () async {
                         await _tagRead();
 
-                        if (result.value != null) {
-                          _incrementCounter(context);
+                        if (result.value == null) {
                           Scaffold.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('No Card detected'),
@@ -134,31 +186,5 @@ class _SCanScreenState extends State<SCanScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _tagRead() async {
-    NfcManager.instance.startSession(
-      onDiscovered: (NfcTag tag) async {
-        final ndef = Ndef.from(tag);
-        if (ndef == null) throw ('Tag is not ndef.');
-
-        Map tagNfca = tag.data['nfca'];
-        setState(() {
-          result.value = tag.data['nfca'];
-        });
-
-        NfcManager.instance.stopSession();
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FileScreen(
-              result,
-            ),
-          ),
-        );
-      },
-    );
-    print('end reading');
   }
 }

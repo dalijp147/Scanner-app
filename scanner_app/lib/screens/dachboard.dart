@@ -10,10 +10,12 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'chart.dart';
 import 'package:provider/provider.dart';
 import '../providers/click.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class DachBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final count = Provider.of<Clicks>(context).getCounter();
+    final v = Provider.of<Clicks>(context).getCounter();
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -39,7 +41,7 @@ class DachBoard extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  child: LineChartSample2(),
+                  child: BarChartSample3(),
                 ),
                 SizedBox(
                   height: 20,
@@ -53,14 +55,18 @@ class DachBoard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),*/
 
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
                       height: 100,
                       width: 300,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
                         boxShadow: [
                           BoxShadow(
                             offset: const Offset(0, 20),
@@ -77,7 +83,12 @@ class DachBoard extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Number of card scanned'),
+                          Text(
+                            ' Total Number of card scanned',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                           Text(
                             '$count',
                             style: TextStyle(
@@ -88,17 +99,103 @@ class DachBoard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                     Container(
-                      height: 230,
+                      height: 100,
+                      width: 300,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 20),
+                            blurRadius: 30,
+                            spreadRadius: -5,
+                          ),
+                        ],
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.purple, Colors.blue],
+                        ),
                       ),
                       child: Column(
-                          children: [Text('this is your daily card scanned')]),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ' Number of card scanned daily',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '$count',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 69, 0, 180),
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 20),
+                            blurRadius: 30,
+                            spreadRadius: -5,
+                          ),
+                        ],
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.purple, Colors.blue],
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ' Number of card scanned Weekly',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '$count',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 69, 0, 180),
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -119,6 +216,7 @@ class DachBoard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
+                focusColor: Colors.amberAccent,
                 onPressed: () {
                   Navigator.pushNamed(context, '/scanscreen');
                 },
