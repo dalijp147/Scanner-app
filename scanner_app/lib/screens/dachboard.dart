@@ -12,10 +12,16 @@ import 'package:provider/provider.dart';
 import '../providers/click.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-class DachBoard extends StatelessWidget {
+class DachBoard extends StatefulWidget {
+  @override
+  State<DachBoard> createState() => _DachBoardState();
+}
+
+class _DachBoardState extends State<DachBoard> {
   Widget build(BuildContext context) {
     final count = Provider.of<Clicks>(context).getCounter();
     final v = Provider.of<Clicks>(context).getCounter();
+    final vvv = Provider.of<Clicks>(context).ftechAndSetPlaces();
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -32,6 +38,7 @@ class DachBoard extends StatelessWidget {
             child: Text(
               'DashBoard',
               textAlign: TextAlign.justify,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           automaticallyImplyLeading: false,
@@ -89,12 +96,25 @@ class DachBoard extends StatelessWidget {
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            '$count',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 69, 0, 180),
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
+                          FutureBuilder(
+                            future: Provider.of<Clicks>(context, listen: false)
+                                .ftechAndSetPlaces(),
+                            builder: (ctx, snapshot) => snapshot
+                                        .connectionState ==
+                                    ConnectionState.waiting
+                                ? Center(
+                                    child: Text(
+                                      'there is no data ',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  )
+                                : Text(
+                                    '$count',
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 69, 0, 180),
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ),
                         ],
                       ),
@@ -153,98 +173,8 @@ class DachBoard extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: const Offset(0, 20),
-                            blurRadius: 30,
-                            spreadRadius: -5,
-                          ),
-                        ],
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.purple, Colors.blue],
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            ' Number of card scanned Weekly',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            '$count',
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 69, 0, 180),
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
-          ),
-        ),
-        bottomNavigationBar: Container(
-          height: 70,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(25),
-              topRight: Radius.circular(25),
-            ),
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                focusColor: Colors.amberAccent,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/scanscreen');
-                },
-                icon: Icon(
-                  Icons.wifi_find,
-                  color: Colors.black,
-                  size: 25,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/filescreen');
-                },
-                icon: Icon(
-                  Icons.book_rounded,
-                  color: Colors.black,
-                  size: 25,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.dashboard,
-                  color: Colors.black,
-                  size: 25,
-                ),
-              ),
-            ],
           ),
         ),
       ),

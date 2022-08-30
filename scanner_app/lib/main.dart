@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import './screens/dachboard.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -6,9 +8,13 @@ import 'package:scanner_app/screens/file_screen.dart';
 import 'package:scanner_app/screens/scan_screen.dart';
 import './providers/click.dart';
 import 'package:provider/provider.dart';
+import './widget/tabs_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -26,13 +32,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          // When navigating to the "/" route, build the FirstScreen widget.
+          '/': (ctx) => TabsScreen(),
           '/scanscreen': (context) => SCanScreen(),
-          '/filescreen': (context) => FileScreen(result),
+          '/filescreen': (context) => FileScreen(),
           // When navigating to the "/second" route, build the SecondScreen widget.
           '/dashboard': (context) => DachBoard(),
         },
-        home: SCanScreen(),
+
         /*SafeArea(
             child: FutureBuilder<bool>(
               future: NfcManager.instance.isAvailable(),
