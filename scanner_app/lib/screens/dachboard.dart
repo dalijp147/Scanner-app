@@ -63,16 +63,18 @@ class _DachBoardState extends State<DachBoard> {
                 ),*/
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 100,
+                      height: 150,
                       width: 300,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20),
                           bottomRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -125,16 +127,18 @@ class _DachBoardState extends State<DachBoard> {
                   height: 30,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: 100,
+                      height: 150,
                       width: 300,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
                         boxShadow: [
                           BoxShadow(
